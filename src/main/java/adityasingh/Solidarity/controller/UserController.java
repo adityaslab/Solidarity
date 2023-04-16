@@ -37,7 +37,7 @@ public class UserController {
 //        return "Task added to user";
 //    }
 
-    @GetMapping("/{id}/tasks")
+    @GetMapping("/{id}/listTasks")
     public List<Task> getTasksForUser(@PathVariable("id") Long userId) throws ResourceNotFoundException {
         return userService.getTasksForUser(userId);
     }

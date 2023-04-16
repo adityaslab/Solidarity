@@ -21,7 +21,7 @@ public class TaskController {
     @Autowired
     private TaskUserService taskUserService;
 
-    @GetMapping("/{id}/users")
+    @GetMapping("/{id}/listUsers")
     public List<User> getUsersForTask(@PathVariable("id") Long taskId) throws ResourceNotFoundException {
         return taskService.getUsersforTask(taskId);
     }
@@ -45,15 +45,16 @@ public class TaskController {
         return taskService.getAllTask();
     }
 
-    @GetMapping("/hello")
-    public ResponseEntity<String> sayHello() {
-        return ResponseEntity.ok("Hello World");
-    }
-
 
     @PostMapping("/addtask")
     public ResponseEntity<Task> addTask(@RequestBody Task task){
         return ResponseEntity.ok(taskService.saveTask(task));
+    }
+
+    @PostMapping("/removeTask/{id}")
+    public String removeTask(@PathVariable("id") Long taskId) throws ResourceNotFoundException {
+        taskService.removeTask(taskId);
+        return "Task removed";
     }
 
 }

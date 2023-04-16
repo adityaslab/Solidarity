@@ -18,4 +18,5 @@ public interface TaskService {
     public List<Task> getAllTask();
     public Task saveTask(Task task);
 
+    public void removeTask(Long taskId);
 }
