@@ -11,4 +11,6 @@ public interface UserService {
     User saveUser(User user);
 
     public List<Task> getTasksForUser(Long userId) throws ResourceNotFoundException;
+
+    void deleteUser(Long id);
 }

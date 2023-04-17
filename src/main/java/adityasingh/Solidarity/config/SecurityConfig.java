@@ -21,7 +21,7 @@ public class SecurityConfig {
     private static final String[] WHITELIST_URL = {
 //            "/api/tasks/**",
 //            "/api/users/**",
-            "/api/auth/**"
+            "/api/auth/**",
 //            "/hello",
 //            "/alltasks",
 //            "/addtask",
@@ -35,13 +35,17 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-//                .cors()
-//                .and()
+                .cors()
+                .and()
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers(WHITELIST_URL)
                 .permitAll()
+                .and()
+                .authorizeHttpRequests()
+                .requestMatchers("/api/admin/**")
+                .hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
