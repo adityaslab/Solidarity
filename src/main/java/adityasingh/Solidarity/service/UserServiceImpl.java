@@ -10,6 +10,7 @@ import adityasingh.Solidarity.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,10 +23,26 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public List<Task> getTasksForUser(Long userId) throws ResourceNotFoundException {
+    public List<List<Task>> getTasksForUser(Long userId) throws ResourceNotFoundException {
+        List<List<Task>> res = new ArrayList<>();
+        res.add(new ArrayList<>());
+        res.add(new ArrayList<>());
+        res.add(new ArrayList<>());
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User id" + userId));
         List<TaskUser> taskUsers = taskUserRepository.findByUser(user);
-        return taskUsers.stream().map(TaskUser::getTask).toList();
+        List<Task> temp = taskUsers.stream().map(TaskUser::getTask).toList();
+        for(Task task: temp){
+            if(task.getStatus().equals("pending")){
+                res.get(0).add(task);
+            }
+            else if(task.getStatus().equals("inprogress")){
+                res.get(1).add(task);
+            }
+            else{
+                res.get(2).add(task);
+            }
+        }
+        return res;
     }
 
     @Override

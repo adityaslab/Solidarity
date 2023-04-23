@@ -28,11 +28,8 @@ public class Task {
     @OneToMany(mappedBy = "task")
     private List<TaskUser> taskUsers = new ArrayList<>();
 
-//    private String description;
-//    @Enumerated(EnumType.STRING)
-//    private Status status;
-//    @Enumerated(EnumType.STRING)
-//    private Priority priority;
+    private String status;
+    private String priority;
 //    private Date startTime;
 //    private Date endTime;
 }
