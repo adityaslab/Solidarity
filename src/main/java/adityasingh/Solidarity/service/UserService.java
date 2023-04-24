@@ -5,12 +5,16 @@ import adityasingh.Solidarity.entity.User;
 import adityasingh.Solidarity.error.ResourceNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
     User saveUser(User user);
 
-    public List<List<Task>> getTasksForUser(Long userId) throws ResourceNotFoundException;
+    List<List<Task>> getTasksForUser(Long userId) throws ResourceNotFoundException;
 
     void deleteUser(Long id);
+
+    Optional<User> findByEmail(String email);
+
 }

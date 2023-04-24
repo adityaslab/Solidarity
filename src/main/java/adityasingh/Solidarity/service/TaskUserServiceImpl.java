@@ -10,6 +10,9 @@ import adityasingh.Solidarity.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class TaskUserServiceImpl implements TaskUserService {
 
@@ -28,4 +31,5 @@ public class TaskUserServiceImpl implements TaskUserService {
         taskUser.setUser(user);
         taskUserRepository.save(taskUser);
     }
+
 }

@@ -10,6 +10,7 @@ import adityasingh.Solidarity.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +51,32 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public List<Task> getAllTask() {
        return taskRepository.findAll();
+    }
+
+    @Override
+    public List<List<Task>> getAllTaskStructured() {
+        List<Task> tasks = taskRepository.findAll();
+        List<List<Task>> structuredTasks = new ArrayList<>();
+        structuredTasks.add(new ArrayList<>());
+        structuredTasks.add(new ArrayList<>());
+        structuredTasks.add(new ArrayList<>());
+        return getLists(tasks, structuredTasks);
+
+    }
+
+    static List<List<Task>> getLists(List<Task> tasks, List<List<Task>> structuredTasks) {
+        for (Task task : tasks) {
+            if(task.getStatus().equals("pending")){
+                structuredTasks.get(0).add(task);
+            }
+            else if(task.getStatus().equals("inprogress")){
+                structuredTasks.get(1).add(task);
+            }
+            else{
+                structuredTasks.get(2).add(task);
+            }
+        }
+        return structuredTasks;
     }
 
     @Override

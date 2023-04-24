@@ -4,8 +4,10 @@ import adityasingh.Solidarity.entity.Task;
 import adityasingh.Solidarity.entity.User;
 import adityasingh.Solidarity.error.ResourceNotFoundException;
 import adityasingh.Solidarity.model.TaskUserModel;
+import adityasingh.Solidarity.service.JWTService;
 import adityasingh.Solidarity.service.TaskService;
 import adityasingh.Solidarity.service.TaskUserService;
+import adityasingh.Solidarity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,17 +36,10 @@ public class TaskController {
         return "User added to task";
     }
 
-//    @PostMapping("/users/{id}/{userId}")
-//    public String addUserToTask(@PathVariable("id") Long taskId, @PathVariable("userId") Long userId) throws ResourceNotFoundException {
-//        taskUserService.addTaskToUser(userId, taskId);
-//        return "User added to task";
-//    }
-
     @GetMapping("/alltasks")
-    public List<Task> getAllTasks(){
-        return taskService.getAllTask();
+    public List<List<Task>> getAllTasks(){
+        return taskService.getAllTaskStructured();
     }
-
 
     @PostMapping("/addtask")
     public ResponseEntity<Task> addTask(@RequestBody Task task){
@@ -53,6 +48,7 @@ public class TaskController {
 
     @PostMapping("/removeTask/{id}")
     public String removeTask(@PathVariable("id") Long taskId) throws ResourceNotFoundException {
+
         taskService.removeTask(taskId);
         return "Task removed";
     }

@@ -16,7 +16,9 @@ public interface TaskService {
     public Optional<Task> findTaskById(Long id);
     public Optional<Task> getTaskByName(String name);
     public List<Task> getAllTask();
+    public List<List<Task>> getAllTaskStructured();
     public Task saveTask(Task task);
 
     public void removeTask(Long taskId);
+
 }

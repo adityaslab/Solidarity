@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static adityasingh.Solidarity.service.TaskServiceImpl.getLists;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,6 +25,8 @@ public class UserServiceImpl implements UserService {
     private TaskUserRepository taskUserRepository;
     @Autowired
     private TaskRepository taskRepository;
+    @Autowired
+    private TaskService taskService;
 
     public List<List<Task>> getTasksForUser(Long userId) throws ResourceNotFoundException {
         List<List<Task>> res = new ArrayList<>();
@@ -31,23 +36,18 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User id" + userId));
         List<TaskUser> taskUsers = taskUserRepository.findByUser(user);
         List<Task> temp = taskUsers.stream().map(TaskUser::getTask).toList();
-        for(Task task: temp){
-            if(task.getStatus().equals("pending")){
-                res.get(0).add(task);
-            }
-            else if(task.getStatus().equals("inprogress")){
-                res.get(1).add(task);
-            }
-            else{
-                res.get(2).add(task);
-            }
-        }
-        return res;
+        return getLists(temp, res);
     }
+
 
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override
