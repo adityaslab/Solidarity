@@ -6,7 +6,9 @@
 Solidarity is a task scheduling application that allows users to create, join, and manage tasks. It is implemented using Java with Spring Boot for the backend, Next.js for the frontend, and utilizes Spring Security for authentication and JWT tokens for secure access.
 ![relationship](https://user-images.githubusercontent.com/71747119/234400343-ae0bd278-fd59-4ada-9b90-dc4044b586db.png)
 ![frontend](https://user-images.githubusercontent.com/71747119/234400369-d342866f-8f18-4c4f-b684-f23194038899.png)
-
+backend: https://github.com/adityaslab/Solidarity
+<br>
+frontend: https://github.com/adityaslab/solidarity-frontend
 
 
 ## Table of Contents
@@ -15,7 +17,6 @@ If your README is long, add a table of contents to make it easy for users to fin
 - [Features](#Features)
 - [API Documentation](#API-Documentation)
 - [Technologies-Used](#Technologies-Used)
-- [Credits](#credits)
 
 ## Features
 -   Solidarity uses Spring Security to provide secure authentication for users. Users can register, login, and logout from the application.
