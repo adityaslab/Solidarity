@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -22,13 +23,18 @@ public class TaskController {
     private TaskService taskService;
     @Autowired
     private TaskUserService taskUserService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private JWTService jwtService;
 
+    @CrossOrigin
     @GetMapping("/{id}/listUsers")
     public List<User> getUsersForTask(@PathVariable("id") Long taskId) throws ResourceNotFoundException {
         return taskService.getUsersforTask(taskId);
     }
 
-
+    @CrossOrigin
     @PostMapping("/addUserToTask")
     public String addUserToTask(@RequestBody TaskUserModel taskUserModel) throws ResourceNotFoundException {
         System.out.println("here");
@@ -36,21 +42,51 @@ public class TaskController {
         return "User added to task";
     }
 
+    @CrossOrigin
     @GetMapping("/alltasks")
     public List<List<Task>> getAllTasks(){
         return taskService.getAllTaskStructured();
     }
 
+    @CrossOrigin
     @PostMapping("/addtask")
-    public ResponseEntity<Task> addTask(@RequestBody Task task){
-        return ResponseEntity.ok(taskService.saveTask(task));
+    public ResponseEntity<Task> addTask(@RequestHeader(name="Authorization")String token, @RequestBody Task task) throws ResourceNotFoundException {
+        token = token.substring(7);
+        String username = jwtService.extractUsername(token);
+        task.setTaskCreator(username);
+        System.out.println(task);
+        Task saved = taskService.saveTask(task);
+        taskService.addUserToTask(saved.getTaskId(), userService.findByEmail(username).get().getUserId());
+        return ResponseEntity.ok(saved);
     }
 
-    @PostMapping("/removeTask/{id}")
-    public String removeTask(@PathVariable("id") Long taskId) throws ResourceNotFoundException {
+    @CrossOrigin
+    @PutMapping("/markComplete/{id}")
+    public ResponseEntity<String> markComplete(@RequestHeader(name = "Authorization") String token,@PathVariable("id") Long taskId) throws ResourceNotFoundException {
+        token = token.substring(7);
+        String username = jwtService.extractUsername(token);
+        Task task = Optional.of(taskService.findTaskById(taskId)).get().orElseThrow(ResourceNotFoundException::new);
+        if(!task.getTaskCreator().equals(username)){
+            return ResponseEntity.status(403).body("You are not the creator of this task");
+        }
+        taskService.markComplete(taskId);
+        return ResponseEntity.ok("task marked complete");
+    }
 
+    @CrossOrigin
+    @DeleteMapping("/removeTask/{id}")
+    public ResponseEntity<String> removeTask(@RequestHeader(name = "Authorization") String token,@PathVariable("id") Long taskId) throws ResourceNotFoundException {
+        System.out.println("inside removeTask");
+        token = token.substring(7);
+        String username = jwtService.extractUsername(token);
+        System.out.println(username);
+        Task task = Optional.of(taskService.findTaskById(taskId)).get().orElseThrow(ResourceNotFoundException::new);
+        if(!task.getTaskCreator().equals(username)){
+            return ResponseEntity.status(403).body("You are not the creator of this task");
+        }
+        taskUserService.removeallWithtaskId(taskId);
         taskService.removeTask(taskId);
-        return "Task removed";
+        return ResponseEntity.ok("task removed");
     }
 
 }

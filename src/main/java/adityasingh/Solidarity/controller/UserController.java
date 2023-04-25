@@ -29,18 +29,14 @@ public class UserController {
     @Autowired
     private TaskService taskService;
 
+    @CrossOrigin
     @PostMapping("/addUser")
     public User addUser(@RequestBody User user){
         return userService.saveUser(user);
     }
 
-    @PostMapping("/addTaskToUser")
-    public String addTaskToUser(@RequestBody TaskUserModel taskUserModel) throws ResourceNotFoundException {
-        System.out.println("here");
-        taskUserService.addTaskToUser(taskUserModel.getUserId(), taskUserModel.getTaskId());
-        return "Task added to user";
-    }
 
+    @CrossOrigin
     @PostMapping("/joinTask/{id}")
     public ResponseEntity<String> joinTask(@RequestHeader(name="Authorization") String token, @PathVariable("id") Long taskId) throws ResourceNotFoundException, IllegalAccessException {
         token = token.substring(7);
@@ -56,6 +52,7 @@ public class UserController {
         }
     }
 
+    @CrossOrigin
     @GetMapping("/{id}/listTasks")
     public List<List<Task>> getTasksForUser(@PathVariable("id") Long userId) throws ResourceNotFoundException {
         return userService.getTasksForUser(userId);

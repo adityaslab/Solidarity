@@ -23,11 +23,12 @@ public class Task {
     )
     private Long taskId;
     private String taskName;
-
+    private String description;
     @JsonIgnore
     @OneToMany(mappedBy = "task")
     private List<TaskUser> taskUsers = new ArrayList<>();
-
+    @JsonIgnore
+    private String taskCreator;
     private String status;
     private String priority;
 //    private Date startTime;

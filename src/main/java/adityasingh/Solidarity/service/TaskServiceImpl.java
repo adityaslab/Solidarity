@@ -8,10 +8,12 @@ import adityasingh.Solidarity.repository.TaskRepository;
 import adityasingh.Solidarity.repository.TaskUserRepository;
 import adityasingh.Solidarity.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -87,6 +89,14 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public void removeTask(Long taskId) {
         taskRepository.deleteById(taskId);
+    }
+
+    @Override
+    public ResponseEntity<Task> markComplete(Long taskId) throws ResourceNotFoundException {
+        Task t = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task id " + taskId));
+        t.setStatus("completed");
+        taskRepository.save(t);
+        return ResponseEntity.ok(t);
     }
 
 }

@@ -3,6 +3,7 @@ package adityasingh.Solidarity.service;
 import adityasingh.Solidarity.entity.Task;
 import adityasingh.Solidarity.entity.User;
 import adityasingh.Solidarity.error.ResourceNotFoundException;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,4 +22,5 @@ public interface TaskService {
 
     public void removeTask(Long taskId);
 
+    ResponseEntity<Task> markComplete(Long taskId) throws ResourceNotFoundException;
 }
