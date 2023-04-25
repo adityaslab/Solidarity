@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -31,6 +32,7 @@ public class Task {
     private String taskCreator;
     private String status;
     private String priority;
-//    private Date startTime;
+    @JsonIgnore
+    private LocalDate startDate;
 //    private Date endTime;
 }

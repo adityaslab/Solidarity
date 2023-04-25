@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +56,7 @@ public class TaskController {
         token = token.substring(7);
         String username = jwtService.extractUsername(token);
         task.setTaskCreator(username);
+        task.setStartDate(LocalDate.now());
         System.out.println(task);
         Task saved = taskService.saveTask(task);
         taskService.addUserToTask(saved.getTaskId(), userService.findByEmail(username).get().getUserId());
